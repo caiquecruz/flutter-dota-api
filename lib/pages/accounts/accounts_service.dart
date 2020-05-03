@@ -6,6 +6,8 @@ class AccountService {
   static Future<List<Account>> getAccounts(account) async {
     final url = 'https://api.opendota.com/api/search?q=$account';
 
+    print(url);
+
     var response = await http.get(url);
 
     String json = response.body;
