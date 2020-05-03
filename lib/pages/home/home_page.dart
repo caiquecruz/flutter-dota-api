@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/pages/accounts/accounts_page.dart';
 import 'package:flutter_project/pages/heroes/heroes_page.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_project/pages/home/home_btn.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -29,19 +30,12 @@ class _HomeState extends State<Home> {
               'assets/dota-logo.png',
             ),
           ),
-          RaisedButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18),
-            ),
-            onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Heroes()));
-            },
-            child: Text(
-              'Heroes',
-              style: GoogleFonts.roboto(fontSize: 20),
-            ),
-          ),
+          Column(
+            children: <Widget>[
+              homeBtn('Heroes', context, Heroes()),
+              homeBtn('Accounts', context, Accounts()),
+            ],
+          )
         ],
       ),
     );

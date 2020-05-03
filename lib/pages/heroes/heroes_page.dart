@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/pages/heroes/heroe.dart';
-import 'package:flutter_project/pages/heroes/heroe_model.dart';
+import 'package:flutter_project/pages/heroes/heroe_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -10,16 +10,18 @@ class Heroes extends StatefulWidget {
 }
 
 class _HeroesState extends State<Heroes> {
-  // @override
-  // bool get wantKeepAlive => true;
+  final _heroeBloc = HeroeBloc();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    this._fetch();
+  }
 
-    HeroeModel model = Provider.of<HeroeModel>(context, listen: false);
-    model.getHeroes();
+  _fetch() {
+    print('tapped');
+    this._heroeBloc.getHeroes();
   }
 
   @override
@@ -28,6 +30,17 @@ class _HeroesState extends State<Heroes> {
       appBar: AppBar(
         title: Text('Heroes'),
         actions: [
+          GestureDetector(
+            onTap: () {
+              _fetch();
+            },
+            child: Icon(
+              Icons.refresh,
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
           Icon(Icons.help),
           PopupMenuButton(
             itemBuilder: (context) => <PopupMenuItem>[
@@ -46,21 +59,32 @@ class _HeroesState extends State<Heroes> {
 
   _body() {
     return Container(
-      child: Center(
-        child: _list(),
-      ),
+      child: StreamBuilder(
+          stream: _heroeBloc.heroeStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text('Error loading data'),
+              );
+            }
+
+            if (snapshot.data == null) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            List<Heroe> heroes = snapshot.data;
+            return RefreshIndicator(
+                child: _list(heroes),
+                onRefresh: () async {
+                  return _fetch();
+                });
+          }),
     );
   }
 
-  _list() {
-    HeroeModel model = Provider.of<HeroeModel>(context);
-
-    List<Heroe> heroes = model.heroes;
-
-    if (heroes.isEmpty) {
-      _refresh();
-    }
-
+  _list(List<Heroe> heroes) {
     return ListView.builder(
       itemCount: heroes != null ? heroes.length : 0,
       itemBuilder: (context, index) {
@@ -77,8 +101,10 @@ class _HeroesState extends State<Heroes> {
     );
   }
 
-  _refresh() {
-    HeroeModel model = Provider.of<HeroeModel>(context);
-    model.getHeroes();
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _heroeBloc.dispose();
   }
 }
