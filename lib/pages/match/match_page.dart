@@ -51,27 +51,26 @@ class _MatchesPageState extends State<MatchesPage> {
   }
 
   _listView(List<Matches> matches) {
-    return ListView.builder(
+    return ListView.separated(
+        separatorBuilder: (_, context) => Divider(),
         itemCount: matches.length,
         itemBuilder: (context, index) {
           return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Card(
-                child: ListTile(
-                  leading: matches[index].radiantWin
-                      ? Text('WIN',
-                          style: TextStyle(color: Colors.green, fontSize: 20))
-                      : Text('LOSS',
-                          style: TextStyle(color: Colors.red, fontSize: 20)),
-                  title: Row(
-                    children: <Widget>[
-                      Text('K:' + matches[index].kills.toString()),
-                      SizedBox(width: 20),
-                      Text('D:' + matches[index].deaths.toString()),
-                      SizedBox(width: 20),
-                      Text('A:' + matches[index].assists.toString()),
-                    ],
-                  ),
+              child: ListTile(
+                leading: matches[index].radiantWin
+                    ? Text('WIN',
+                        style: TextStyle(color: Colors.green, fontSize: 20))
+                    : Text('LOSS',
+                        style: TextStyle(color: Colors.red, fontSize: 20)),
+                title: Row(
+                  children: <Widget>[
+                    Text('K:' + matches[index].kills.toString()),
+                    SizedBox(width: 20),
+                    Text('D:' + matches[index].deaths.toString()),
+                    SizedBox(width: 20),
+                    Text('A:' + matches[index].assists.toString()),
+                  ],
                 ),
               ));
         });

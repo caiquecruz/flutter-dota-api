@@ -50,29 +50,56 @@ class _AccountsState extends State<Accounts> {
               padding: EdgeInsets.all(18),
               child: Column(
                 children: <Widget>[
-                  TextFormField(
-                    controller: _accountText,
-                    decoration: InputDecoration(
-                      hintText: 'e.g Joseph',
-                      focusColor: Colors.black,
-                      labelText: 'Please enter an account name',
-                      labelStyle: TextStyle(fontSize: 25),
-                    ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter a valid account';
-                      }
-                      return null;
-                    },
+                  Text(
+                    'Please enter an account name:',
+                    style: TextStyle(fontSize: 20),
                   ),
-                  SizedBox(height: 18),
-                  RaisedButton(
-                    onPressed: () {
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.black12,
+                      borderRadius: BorderRadius.circular(29.5),
+                    ),
+                    child: TextFormField(
+                      controller: _accountText,
+                      decoration: InputDecoration(
+                          hintText: 'e.g Joseph',
+                          icon: Icon(Icons.search),
+                          focusColor: Colors.black,
+                          labelText: 'Search',
+                          labelStyle: TextStyle(fontSize: 20),
+                          border: InputBorder.none),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter a valid account\n';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(29.5),
+                    onTap: () {
                       if (_formKey.currentState.validate()) {
                         this.getAccounts(_accountText.text);
                       }
                     },
-                    child: Text('Go!'),
+                    child: Container(
+                      width: 70,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        color: Colors.black38,
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(29.5),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Go!',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                    ),
                   )
                 ],
               ),
